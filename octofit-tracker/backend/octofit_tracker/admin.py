@@ -4,9 +4,10 @@ from .models import Team, Activity, Workout, LeaderboardEntry
 
 User = get_user_model()
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff')
+# User model is already registered by Django's default admin
+# @admin.register(User)
+# class UserAdmin(admin.ModelAdmin):
+#     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff')
 
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):

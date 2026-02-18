@@ -21,6 +21,7 @@ from .views import UserViewSet, TeamViewSet, ActivityViewSet, WorkoutViewSet, Le
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.shortcuts import redirect
+import os
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -31,12 +32,22 @@ router.register(r'leaderboard', LeaderboardEntryViewSet)
 
 @api_view(['GET'])
 def api_root(request, format=None):
+    # Get CODESPACE_NAME from environment
+    codespace_name = os.environ.get('CODESPACE_NAME')
+    
+    # Build base URL based on environment
+    if codespace_name:
+        base_url = f'https://{codespace_name}-8000.app.github.dev'
+    else:
+        # Fallback to localhost for local development
+        base_url = 'http://localhost:8000'
+    
     return Response({
-        'users': request.build_absolute_uri('api/users/'),
-        'teams': request.build_absolute_uri('api/teams/'),
-        'activities': request.build_absolute_uri('api/activities/'),
-        'workouts': request.build_absolute_uri('api/workouts/'),
-        'leaderboard': request.build_absolute_uri('api/leaderboard/'),
+        'users': f'{base_url}/api/users/',
+        'teams': f'{base_url}/api/teams/',
+        'activities': f'{base_url}/api/activities/',
+        'workouts': f'{base_url}/api/workouts/',
+        'leaderboard': f'{base_url}/api/leaderboard/',
     })
 
 urlpatterns = [
